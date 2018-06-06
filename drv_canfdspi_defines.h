@@ -112,7 +112,7 @@ extern "C" {
 #define MAX_MSG_SIZE 76
 
 // Maximum number of data bytes in message
-#define MAX_DATA_BYTES 64
+#define MAX_DATA_BYTES 8 // 64 in CANFD
 
 // *****************************************************************************
 // *****************************************************************************

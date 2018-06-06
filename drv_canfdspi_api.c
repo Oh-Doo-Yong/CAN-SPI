@@ -45,6 +45,7 @@ MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE TER
 #include "drv_canfdspi_register.h"
 #include "drv_canfdspi_defines.h"
 #include "drv_spi.h"
+#include <Arduino.h>
 //#include <xc.h>
 
 
@@ -65,10 +66,10 @@ MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE TER
 // Section: Variables
 
 //! SPI Transmit buffer
-uint8_t spiTransmitBuffer[SPI_DEFAULT_BUFFER_LENGTH];
+uint8_t spiTransmitBuffer[SPI_DEFAULT_BUFFER_LENGTH+2]; // << example code mistake causing buffer overflow
 
 //! SPI Receive buffer
-uint8_t spiReceiveBuffer[SPI_DEFAULT_BUFFER_LENGTH];
+uint8_t spiReceiveBuffer[SPI_DEFAULT_BUFFER_LENGTH+2];
 
 //! Reverse order of bits in byte
 const uint8_t BitReverseTable256[256] = {
@@ -417,7 +418,7 @@ int8_t DRV_CANFDSPI_WriteByteArray(CANFDSPI_MODULE_ID index, uint16_t address,
     spiTransmitBuffer[1] = (uint8_t) (address & 0xFF);
 
     // Add data
-    for (i = 2; i < spiTransferSize; i++) {
+    for (i = 2; i < spiTransferSize; i++) { // << this for overflows
         spiTransmitBuffer[i] = txd[i - 2];
     }
 
