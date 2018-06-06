@@ -4,7 +4,9 @@
 #include "drv_spi.h"
 #include "CanAPI.h"
 
-bool flush = true;
+uint8_t *tx = malloc(8*sizeof(uint8_t));
+uint8_t rx[MAX_DATA_BYTES]; // same as  uint8_t *rx = malloc(8*sizeof(uint8_t));
+CAN_RX_MSGOBJ *rxObj;
 
 void setup() {
   Serial.begin(115200);
@@ -32,25 +34,26 @@ void loop() {
 //    Serial.println("register access OK");
 
   uint8_t error = 0;
-  uint8_t *txPacket = malloc(8*sizeof(uint8_t));
-  error = can_transmit(0x45A, txPacket, CAN_DLC_8);
+  error = can_transmit(0x45A, tx, CAN_DLC_8);
   if(error)
     Serial.println("CAN send issue");
   else
     Serial.println("CAN send OK");
 
   delay(500);
-  uint8_t rxLen;
-  uint8_t rx[MAX_DATA_BYTES]; // same as  uint8_t *rx = malloc(8*sizeof(uint8_t));
   uint16_t rxSid;
-  uint8_t *rxObj = can_receive(&rxSid, rx, &rxLen);
+  uint8_t rxLen;
+  CAN_RX_MSGOBJ *rxObj = can_receive(&rxSid, rx, &rxLen);
   if(rxObj){
-    for(int i=0; i<rxLen; i++)
+    if(rxObj->bF.id.SID == 0x45A) { // or simply rxSid == 0x45A
+      for(int i=0; i<rxLen; i++)
       {Serial.print(rx[i]); Serial.print(" ");}
-    Serial.println(" UpShift");
+      Serial.println("UpShift");
+    } else
+    Serial.println("Message received but SID mismatch");
   }
   else
-    Serial.println("DownShift");
+    Serial.println("No message received");
 
   delay(1000);
 }

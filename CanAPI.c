@@ -384,7 +384,7 @@ int8_t can_init_interrupts()
 }
 
     /* Receive message using FIFO status */
-uint8_t* can_receive_fifo(uint16_t *sid, uint8_t *rxd, uint8_t *len)
+CAN_RX_MSGOBJ* can_receive_fifo(uint16_t *sid, uint8_t *rxd, uint8_t *len)
 {
     // Receive Message Object
     CAN_RX_MSGOBJ rxObj;
@@ -458,7 +458,7 @@ uint8_t can_transmit(uint16_t sid, uint8_t *txd, CAN_DLC dlc)
 }
 
     /* Receive message using interrupt pin */ // Arduino PD2
-uint8_t* can_receive(uint16_t *sid, uint8_t *rxd, uint8_t *len)
+CAN_RX_MSGOBJ* can_receive(uint16_t *sid, uint8_t *rxd, uint8_t *len)
 {
     // Receive Message Object
     CAN_RX_MSGOBJ rxObj;

@@ -51,7 +51,7 @@ int8_t can_init_interrupts(void);
   * @param  *len pointer to length (filled by the receive function from CAN_RX_MSGOBJ)
   * @return pointer to CAN_RX_MSGOBJ
   */
-uint8_t* can_receive_fifo(uint16_t *sid, uint8_t *rxd, uint8_t *len);
+CAN_RX_MSGOBJ* can_receive_fifo(uint16_t *sid, uint8_t *rxd, uint8_t *len);
 /**
   * @brief  Transmit CAN message
   * @param  CAN_MSGOBJ_ID standard CAN ID e.g. 0x45A
@@ -67,7 +67,7 @@ uint8_t can_transmit(uint16_t sid, uint8_t *txd, CAN_DLC dlc);
   * @param  *len pointer to length (filled by the receive function from CAN_RX_MSGOBJ)
   * @return pointer to CAN_RX_MSGOBJ
   */
-uint8_t* can_receive(uint16_t *sid, uint8_t *rxd, uint8_t *len);
+CAN_RX_MSGOBJ* can_receive(uint16_t *sid, uint8_t *rxd, uint8_t *len);
 void can_request_config(void);
 bool can_wait_for_config(void);
 
